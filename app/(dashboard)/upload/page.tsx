@@ -7,6 +7,7 @@ import { useTrackUpload } from '@/hooks/useTrackUpload'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { Split } from '@/types/api'
+import { UploadCloud } from 'lucide-react'
 
 export default function UploadPage() {
     const [file, setFile] = useState<File | null>(null)
@@ -35,11 +36,18 @@ export default function UploadPage() {
 
     return (
         <div className="max-w-3xl mx-auto space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold mb-2">Upload Track</h1>
-                <p className="text-muted-foreground">Upload your latest masterpiece and submit metadata.</p>
+            {/* Header */}
+            <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-600/20 shrink-0">
+                    <UploadCloud className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Upload Track</h1>
+                    <p className="text-muted-foreground mt-1">Upload your latest masterpiece and submit metadata.</p>
+                </div>
             </div>
 
+            {/* Drop Zone */}
             <DropZone
                 onFileSelect={setFile}
                 selectedFile={file}
@@ -47,9 +55,13 @@ export default function UploadPage() {
                 progress={progress}
             />
 
+            {/* Metadata Form */}
             {file && (
-                <div className="bg-card border rounded-xl p-6 mt-8">
-                    <h2 className="text-xl font-semibold mb-6">Track Metadata</h2>
+                <div className="glass rounded-2xl p-6 animate-slide-up" id="upload-metadata-section">
+                    <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                        <div className="w-1.5 h-5 rounded-full bg-gradient-to-b from-violet-600 to-indigo-600" />
+                        Track Metadata
+                    </h2>
                     <MetadataForm onSubmit={handleMetadataSubmit} isUploading={isUploading} />
                 </div>
             )}

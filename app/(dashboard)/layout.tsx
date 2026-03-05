@@ -16,8 +16,10 @@ export default async function DashboardLayout({
     return (
         <div className="flex min-h-screen bg-background text-foreground">
             <Sidebar />
-            <main className="flex-1 md:ml-64 pb-20 md:pb-0 overflow-y-auto">
-                <div className="container mx-auto p-4 md:p-8 max-w-6xl">
+            <main className="flex-1 md:ml-64 pb-24 md:pb-0 overflow-y-auto relative">
+                {/* Subtle gradient at the top of the main content area */}
+                <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-violet-600/[0.03] to-transparent pointer-events-none" />
+                <div className="relative container mx-auto p-5 md:p-8 max-w-6xl animate-fade-in">
                     {children}
                 </div>
             </main>

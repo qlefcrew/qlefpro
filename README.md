@@ -4,13 +4,25 @@ A Next.js 14 B2C SaaS platform for independent musicians to manage their music c
 
 ## Features
 
-- **Authentication & User Management:** Powered by Clerk.
+- **Authentication & User Management:** Powered by Clerk with premium dark theme integration.
 - **Database & Storage:** Supabase for PostgreSQL, AWS S3 for direct file uploads.
 - **Subscriptions & Billing:** Stripe integration with checkout and billing portals.
-- **Catalog Management:** Secure track uploads with presigned S3 URLs.
-- **Transparency & Royalties:** Advanced split validation up to 10 collaborators, with interactive visual charts.
-- **Analytics:** View stream counts and earnings over time through charts.
-- **PWA Ready:** Installable as a Progressive Web App.
+- **Catalog Management:** Secure track uploads with presigned S3 URLs and drag-and-drop UI.
+- **Transparency & Royalties:** Advanced split validation up to 10 collaborators, with interactive doughnut charts.
+- **Analytics:** View stream counts and earnings over time through gradient area charts.
+- **Premium UI:** Glassmorphism design system, micro-animations, gradient accents, and responsive layouts.
+
+## Tech Stack
+
+- **Framework:** Next.js 14 (App Router)
+- **Styling:** Tailwind CSS + shadcn/ui + custom glassmorphism design system
+- **Icons:** Lucide React
+- **Charts:** Chart.js + react-chartjs-2
+- **Auth:** Clerk (with dark theme)
+- **DB:** Supabase (PostgreSQL)
+- **Payments:** Stripe
+- **Storage:** AWS S3
+- **Deployment:** Vercel
 
 ## Prerequisites
 
@@ -49,9 +61,50 @@ A Next.js 14 B2C SaaS platform for independent musicians to manage their music c
    pnpm dev
    ```
 
+## Deploying to Vercel
+
+1. **Push to GitHub:**
+   ```bash
+   git add .
+   git commit -m "Ready for Vercel deployment"
+   git push
+   ```
+
+2. **Import to Vercel:**
+   - Go to [vercel.com/new](https://vercel.com/new)
+   - Import your GitHub repository
+   - Vercel will auto-detect the Next.js framework
+
+3. **Configure Environment Variables:**
+   Add all variables from `.env.local.example` to your Vercel project settings:
+   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+   - `CLERK_SECRET_KEY`
+   - `CLERK_WEBHOOK_SECRET`
+   - `NEXT_PUBLIC_CLERK_SIGN_IN_URL` → `/sign-in`
+   - `NEXT_PUBLIC_CLERK_SIGN_UP_URL` → `/sign-up`
+   - `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` → `/dashboard`
+   - `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` → `/dashboard`
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+   - `AWS_REGION`
+   - `AWS_S3_BUCKET_NAME`
+   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+   - `STRIPE_SECRET_KEY`
+   - `STRIPE_WEBHOOK_SECRET`
+   - `STRIPE_PRO_PRICE_ID`
+   - `NEXT_PUBLIC_APP_URL` → `https://your-vercel-domain.vercel.app`
+
+4. **Deploy:** Click "Deploy" and Vercel handles the rest.
+
+5. **Update Webhook URLs:**
+   After deployment, update your Clerk and Stripe webhook endpoints to use your Vercel domain.
+
 ## Production Build
 
-To build the application for production:
+To build the application locally for production:
 ```bash
 pnpm build
 pnpm start
@@ -63,14 +116,3 @@ The project uses Jest and React Testing Library for automated tests.
 ```bash
 pnpm test
 ```
-
-## Tech Stack
-
-- **Framework:** Next.js 14 (App Router)
-- **Styling:** Tailwind CSS + shadcn/ui
-- **Icons:** Lucide React
-- **Charts:** Chart.js + react-chartjs-2
-- **Auth:** Clerk
-- **DB/Auth:** Supabase
-- **Payments:** Stripe
-- **Storage:** AWS S3
