@@ -18,24 +18,23 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "MusicForge — Distribute. Split. Grow.",
-    template: "%s | MusicForge",
+    default: "qlefPro — Distribute. Split. Grow.",
+    template: "%s | qlefPro",
   },
   description:
-    "The all-in-one SaaS platform for independent musicians. Upload tracks, manage royalty splits transparently, and grow your audience with real-time analytics.",
+    "The all-in-one platform for independent musicians. Upload tracks, manage royalty splits transparently, and grow your audience with real-time analytics.",
   keywords: [
     "music distribution",
     "royalty splits",
     "independent musician",
-    "SaaS",
+    "qlefPro",
     "streaming analytics",
-    "MusicForge",
   ],
   authors: [{ name: "QLEF" }],
   openGraph: {
-    title: "MusicForge — Distribute. Split. Grow.",
+    title: "qlefPro — Distribute. Split. Grow.",
     description:
-      "The all-in-one SaaS platform for independent musicians.",
+      "The all-in-one platform for independent musicians.",
     type: "website",
     locale: "en_US",
   },
@@ -46,9 +45,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#7C3AED",
+  themeColor: "#0a0a0f",
   width: "device-width",
   initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -61,12 +62,21 @@ export default function RootLayout({
       appearance={{
         baseTheme: dark,
         variables: {
-          colorPrimary: "#7C3AED",
-          colorBackground: "#0f1117",
-          colorText: "#f0f2f5",
-          colorInputBackground: "#1a1d2e",
-          colorInputText: "#f0f2f5",
-          borderRadius: "0.75rem",
+          colorPrimary: "#818cf8",
+          colorBackground: "#121218",
+          colorText: "#f0f0f5",
+          colorInputBackground: "#1a1a24",
+          colorInputText: "#f0f0f5",
+          colorTextSecondary: "#71717a",
+          borderRadius: "0.875rem",
+          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
+        },
+        elements: {
+          card: "shadow-2xl border border-white/[0.06]",
+          socialButtonsBlockButton: "bg-white/[0.04] border-white/[0.08] hover:bg-white/[0.08]",
+          formFieldInput: "bg-white/[0.04] border-white/[0.1]",
+          formButtonPrimary: "bg-gradient-to-r from-indigo-400 to-indigo-600 hover:opacity-90",
+          footerActionLink: "text-indigo-400",
         },
       }}
     >

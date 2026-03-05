@@ -4,102 +4,123 @@ import { useState, useEffect } from 'react'
 import { RoyaltySplitCard } from '@/components/transparency/RoyaltySplitCard'
 import { useSubscription } from '@/hooks/useSubscription'
 import { PaywallBanner } from '@/components/dashboard/PaywallBanner'
-import { Loader2, Shield, Wallet, Receipt, ArrowRight } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
-
-// Dummy Data for MVP
-const MOCK_SPLITS = [
-    { collaborator: 'Demo Artist', role: 'Artist', percentage: 60 },
-    { collaborator: 'Producer Dan', role: 'Producer', percentage: 30 },
-    { collaborator: 'Studio A', role: 'Mix Engineer', percentage: 10 },
-]
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Loader2, FileText, DollarSign, ArrowRight, Info } from 'lucide-react'
+import Link from 'next/link'
+import type { RoyaltyData, CostBreakdown, UnclaimedRoyalty } from '@/types/api'
 
 export default function TransparencyPage() {
     const { isPro, loading: subLoading } = useSubscription()
-    const [data, setData] = useState<any>(null)
+    const [royalties, setRoyalties] = useState<RoyaltyData[]>([])
+    const [costs, setCosts] = useState<CostBreakdown | null>(null)
+    const [unclaimed, setUnclaimed] = useState<UnclaimedRoyalty[]>([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        setData({
-            trackTitle: 'Midnight Sun',
-            totalEarnings: 8450.50,
-            splits: MOCK_SPLITS
-        })
-    }, [])
+        if (!isPro) return
+        Promise.all([
+            fetch('/api/transparency/royalties').then(r => r.json()),
+            fetch('/api/transparency/costs').then(r => r.json()),
+            fetch('/api/transparency/unclaimed').then(r => r.json()),
+        ])
+            .then(([royaltyData, costData, unclaimedData]) => {
+                if (Array.isArray(royaltyData)) setRoyalties(royaltyData)
+                if (!costData.error) setCosts(costData)
+                if (Array.isArray(unclaimedData)) setUnclaimed(unclaimedData)
+            })
+            .catch(console.error)
+            .finally(() => setLoading(false))
+    }, [isPro])
 
     if (subLoading) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-violet-500/10 flex items-center justify-center">
-                    <Loader2 className="animate-spin text-violet-400 h-6 w-6" />
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <Loader2 className="w-5 h-5 animate-spin text-white/30" />
+            </div>
+        )
+    }
+
+    if (!isPro) {
+        return (
+            <div className="space-y-6">
+                <div>
+                    <h1 className="text-[24px] sm:text-[28px] font-bold tracking-tight">Transparency</h1>
+                    <p className="text-white/40 text-[14px] mt-0.5">See exactly where your money goes.</p>
                 </div>
-                <p className="text-sm text-muted-foreground">Loading transparency data…</p>
+                <PaywallBanner feature="Transparency Reports" />
             </div>
         )
     }
 
     return (
-        <div className="space-y-8">
-            {/* Header */}
-            <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
-                    <Shield className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Financial Transparency</h1>
-                    <p className="text-muted-foreground mt-1">View real-time royalty splits, platform costs, and unclaimed funds.</p>
-                </div>
+        <div className="space-y-6">
+            <div>
+                <h1 className="text-[24px] sm:text-[28px] font-bold tracking-tight">Transparency</h1>
+                <p className="text-white/40 text-[14px] mt-0.5">See exactly where your money goes.</p>
             </div>
 
-            {!isPro ? (
-                <PaywallBanner feature="Financial Transparency" />
+            {loading ? (
+                <div className="flex items-center justify-center min-h-[40vh]">
+                    <Loader2 className="w-5 h-5 animate-spin text-white/30" />
+                </div>
             ) : (
-                <div className="grid md:grid-cols-2 gap-6 animate-fade-in">
-                    {data && (
-                        <RoyaltySplitCard
-                            trackTitle={data.trackTitle}
-                            totalEarnings={data.totalEarnings}
-                            splits={data.splits}
-                        />
-                    )}
-
-                    <div className="space-y-6 stagger-children">
-                        <div className="group p-6 rounded-2xl glass card-hover relative overflow-hidden" id="unclaimed-funds-card">
-                            <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl" />
-                            <div className="relative">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                                        <Wallet className="w-4 h-4 text-amber-400" />
-                                    </div>
-                                    <h2 className="text-lg font-semibold">Unclaimed Funds</h2>
+                <div className="space-y-6 stagger-children">
+                    {/* Info Cards */}
+                    <div className="grid gap-3 sm:grid-cols-2">
+                        <Card className="bg-white/[0.03] border-white/[0.06]">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-[11px] font-semibold uppercase tracking-wider text-white/30">
+                                    Platform Costs
+                                </CardTitle>
+                                <div className="w-7 h-7 rounded-lg bg-white/[0.06] flex items-center justify-center">
+                                    <Info className="h-3.5 w-3.5 text-white/40" />
                                 </div>
-                                <div className="text-3xl font-bold mb-2">{formatCurrency(1240.00)}</div>
-                                <p className="text-sm text-muted-foreground mb-4">Pending payout processing or missing tax forms.</p>
-                                <button className="inline-flex items-center gap-1 text-sm text-amber-400 font-medium hover:text-amber-300 transition-colors group/link">
-                                    View Details
-                                    <ArrowRight className="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" />
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="group p-6 rounded-2xl glass card-hover relative overflow-hidden" id="platform-costs-card">
-                            <div className="absolute top-0 right-0 w-24 h-24 bg-violet-500/5 rounded-full blur-2xl" />
-                            <div className="relative">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-9 h-9 rounded-lg bg-violet-500/10 flex items-center justify-center">
-                                        <Receipt className="w-4 h-4 text-violet-400" />
-                                    </div>
-                                    <h2 className="text-lg font-semibold">Platform Costs</h2>
-                                </div>
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    Breakdown of the 12% MusicForge fee — server costs, Stripe fees, and PRO administration.
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-white/40 text-[13px] leading-relaxed">
+                                    Breakdown of the 12% qlefPro fee — server costs, Stripe fees, and PRO administration.
                                 </p>
-                                <button className="inline-flex items-center gap-1 text-sm text-violet-400 font-medium hover:text-violet-300 transition-colors group/link">
-                                    View Ledger
-                                    <ArrowRight className="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" />
-                                </button>
-                            </div>
-                        </div>
+                            </CardContent>
+                        </Card>
+                        <Card className="bg-white/[0.03] border-white/[0.06]">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-[11px] font-semibold uppercase tracking-wider text-white/30">
+                                    Unclaimed Royalties
+                                </CardTitle>
+                                <div className="w-7 h-7 rounded-lg bg-white/[0.06] flex items-center justify-center">
+                                    <DollarSign className="h-3.5 w-3.5 text-white/40" />
+                                </div>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-white/40 text-[13px] leading-relaxed">
+                                    Unclaimed splits are held in escrow for up to 90 days before reverting.
+                                </p>
+                            </CardContent>
+                        </Card>
                     </div>
+
+                    {/* Royalty Split Charts */}
+                    {royalties.map((royalty) => (
+                        <RoyaltySplitCard key={royalty.trackId} data={royalty} />
+                    ))}
+
+                    {royalties.length === 0 && (
+                        <div className="flex flex-col items-center justify-center py-16 text-center">
+                            <div className="w-14 h-14 rounded-2xl bg-white/[0.06] flex items-center justify-center mb-4">
+                                <FileText className="w-6 h-6 text-white/30" />
+                            </div>
+                            <h2 className="text-[17px] font-semibold mb-1">No royalty data yet</h2>
+                            <p className="text-white/40 text-[14px] mb-5 max-w-xs">
+                                Upload a track with collaborator splits to see transparency reports.
+                            </p>
+                            <Link
+                                href="/upload"
+                                className="inline-flex items-center gap-1 text-[13px] text-white/60 font-medium hover:text-white transition-colors"
+                            >
+                                Upload a Track <ArrowRight className="w-3 h-3" />
+                            </Link>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

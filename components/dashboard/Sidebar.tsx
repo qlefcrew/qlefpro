@@ -22,24 +22,21 @@ export function Sidebar() {
     return (
         <>
             {/* Desktop Sidebar */}
-            <aside className="hidden md:flex flex-col w-64 h-screen fixed top-0 left-0 bg-card/80 backdrop-blur-xl border-r border-white/5 overflow-y-auto z-40">
+            <aside className="hidden md:flex flex-col w-[260px] h-screen fixed top-0 left-0 bg-card/60 backdrop-blur-2xl border-r border-white/[0.06] overflow-y-auto z-40">
                 {/* Logo */}
-                <div className="p-6 border-b border-white/5">
-                    <Link href="/dashboard" className="flex items-center gap-3 group" id="sidebar-logo">
-                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-violet-600/20 group-hover:shadow-violet-600/40 transition-shadow">
-                            <Disc3 className="w-5 h-5" />
+                <div className="px-5 py-5 border-b border-white/[0.06]">
+                    <Link href="/dashboard" className="flex items-center gap-2.5" id="sidebar-logo">
+                        <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
+                            <span className="text-black font-extrabold text-sm tracking-tighter">Q</span>
                         </div>
-                        <span className="text-lg font-bold tracking-tight">
-                            Music<span className="text-violet-400">Forge</span>
+                        <span className="text-[16px] font-semibold tracking-tight">
+                            qlef<span className="font-bold">Pro</span>
                         </span>
                     </Link>
                 </div>
 
-                {/* Navigation */}
-                <nav className="flex-1 px-3 py-4 space-y-1">
-                    <p className="px-3 mb-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                        Menu
-                    </p>
+                {/* Nav */}
+                <nav className="flex-1 px-3 py-4 space-y-0.5">
                     {navItems.map((item) => {
                         const Icon = item.icon
                         const isActive = pathname === item.href
@@ -49,35 +46,32 @@ export function Sidebar() {
                                 href={item.href}
                                 id={`sidebar-${item.label.toLowerCase()}`}
                                 className={cn(
-                                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+                                    "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium transition-all duration-200",
                                     isActive
-                                        ? "bg-gradient-to-r from-violet-600/20 to-indigo-600/10 text-violet-300 shadow-sm"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-white/[0.04]"
+                                        ? "bg-white/[0.08] text-white"
+                                        : "text-white/40 hover:text-white/70 hover:bg-white/[0.04] active:bg-white/[0.06]"
                                 )}
                             >
-                                <Icon size={18} className={cn(isActive && "text-violet-400")} />
+                                <Icon size={18} className={cn(isActive ? "text-white" : "text-white/40")} />
                                 <span>{item.label}</span>
-                                {isActive && (
-                                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-                                )}
                             </Link>
                         )
                     })}
                 </nav>
 
-                {/* User Section */}
-                <div className="p-3 border-t border-white/5 mt-auto space-y-1">
+                {/* User */}
+                <div className="p-3 border-t border-white/[0.06] mt-auto space-y-0.5">
                     {user && (
-                        <div className="flex items-center gap-3 px-3 py-3 rounded-xl glass mb-2">
-                            <Avatar className="w-8 h-8 ring-2 ring-violet-500/20">
+                        <div className="flex items-center gap-3 px-3 py-3 rounded-xl bg-white/[0.03] mb-2">
+                            <Avatar className="w-8 h-8 ring-1 ring-white/10">
                                 <AvatarImage src={user.imageUrl} />
-                                <AvatarFallback className="bg-violet-600/20 text-violet-300 text-xs">
+                                <AvatarFallback className="bg-white/10 text-white/70 text-xs font-medium">
                                     {user.firstName?.charAt(0) || 'U'}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="flex-1 overflow-hidden">
-                                <p className="text-sm font-medium truncate">{user.fullName}</p>
-                                <p className="text-[11px] text-muted-foreground truncate">{user.primaryEmailAddress?.emailAddress}</p>
+                                <p className="text-[13px] font-medium truncate">{user.fullName}</p>
+                                <p className="text-[11px] text-white/30 truncate">{user.primaryEmailAddress?.emailAddress}</p>
                             </div>
                         </div>
                     )}
@@ -85,10 +79,10 @@ export function Sidebar() {
                         href="/settings"
                         id="sidebar-settings"
                         className={cn(
-                            "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+                            "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium transition-all duration-200",
                             pathname === '/settings'
-                                ? "bg-gradient-to-r from-violet-600/20 to-indigo-600/10 text-violet-300"
-                                : "text-muted-foreground hover:text-foreground hover:bg-white/[0.04]"
+                                ? "bg-white/[0.08] text-white"
+                                : "text-white/40 hover:text-white/70 hover:bg-white/[0.04]"
                         )}
                     >
                         <Settings size={18} />
@@ -97,7 +91,7 @@ export function Sidebar() {
                     <SignOutButton>
                         <button
                             id="sidebar-signout"
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl w-full text-left text-sm font-medium text-muted-foreground hover:text-red-400 hover:bg-red-500/[0.06] transition-all duration-200"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl w-full text-left text-[14px] font-medium text-white/40 hover:text-red-400 hover:bg-red-500/[0.06] transition-all duration-200 active:bg-red-500/[0.1]"
                         >
                             <LogOut size={18} />
                             <span>Sign Out</span>
@@ -107,7 +101,7 @@ export function Sidebar() {
             </aside>
 
             {/* Mobile Bottom Nav */}
-            <div className="md:hidden fixed bottom-0 left-0 w-full bg-card/90 backdrop-blur-xl border-t border-white/5 flex items-center justify-around p-2 z-50 pb-safe">
+            <div className="md:hidden fixed bottom-0 left-0 w-full bg-card/80 backdrop-blur-2xl border-t border-white/[0.06] flex items-center justify-around px-1 pt-2 pb-safe z-50">
                 {navItems.map((item) => {
                     const Icon = item.icon
                     const isActive = pathname === item.href
@@ -117,13 +111,13 @@ export function Sidebar() {
                             href={item.href}
                             id={`mobile-nav-${item.label.toLowerCase()}`}
                             className={cn(
-                                "flex flex-col items-center gap-1 p-2 rounded-xl min-w-[56px] transition-all duration-200",
+                                "flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl min-w-[52px] transition-all duration-200 active:scale-90",
                                 isActive
-                                    ? "text-violet-400 bg-violet-500/10"
-                                    : "text-muted-foreground"
+                                    ? "text-white"
+                                    : "text-white/30"
                             )}
                         >
-                            <Icon size={20} />
+                            <Icon size={22} strokeWidth={isActive ? 2.2 : 1.5} />
                             <span className="text-[10px] font-medium">{item.label}</span>
                         </Link>
                     )

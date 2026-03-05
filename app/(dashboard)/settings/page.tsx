@@ -5,134 +5,134 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useSubscription } from '@/hooks/useSubscription'
-import { Loader2, Check, Sparkles, Crown, Settings as SettingsIcon } from 'lucide-react'
-
-const proFeatures = [
-    'Unlimited track uploads',
-    'Up to 10 royalty splits per track',
-    'Advanced streaming analytics',
-    'Financial transparency tools',
-    'Priority support',
-]
+import { Settings, Crown, Check, Loader2 } from 'lucide-react'
 
 export default function SettingsPage() {
     const { isPro, loading } = useSubscription()
-    const [checkoutLoading, setCheckoutLoading] = useState(false)
-
-    const handleUpgrade = async () => {
-        setCheckoutLoading(true)
-        try {
-            const res = await fetch('/api/stripe/create-checkout', { method: 'POST' })
-            const { url } = await res.json()
-            if (url) window.location.href = url
-        } catch (err) {
-            console.error(err)
-        } finally {
-            setCheckoutLoading(false)
-        }
-    }
+    const [portalLoading, setPortalLoading] = useState(false)
 
     const handleManageBilling = async () => {
-        setCheckoutLoading(true)
+        setPortalLoading(true)
         try {
             const res = await fetch('/api/stripe/portal', { method: 'POST' })
-            const { url } = await res.json()
-            if (url) window.location.href = url
+            const data = await res.json()
+            if (data.url) window.location.href = data.url
         } catch (err) {
-            console.error(err)
+            console.error('Billing portal error:', err)
         } finally {
-            setCheckoutLoading(false)
+            setPortalLoading(false)
         }
     }
 
+    const handleUpgrade = async () => {
+        setPortalLoading(true)
+        try {
+            const res = await fetch('/api/stripe/create-checkout', { method: 'POST' })
+            const data = await res.json()
+            if (data.url) window.location.href = data.url
+        } catch (err) {
+            console.error('Checkout error:', err)
+        } finally {
+            setPortalLoading(false)
+        }
+    }
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <Loader2 className="w-5 h-5 animate-spin text-white/30" />
+            </div>
+        )
+    }
+
+    const proFeatures = [
+        'Advanced Analytics & Insights',
+        'Transparency Reports',
+        'Priority Support',
+        'Early Access to New Features',
+        'Custom Branding',
+    ]
+
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
-            {/* Header */}
-            <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-600/20 shrink-0">
-                    <SettingsIcon className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Settings & Billing</h1>
-                    <p className="text-muted-foreground mt-1">Manage your account preferences and subscription plan.</p>
-                </div>
+        <div className="space-y-6">
+            <div>
+                <h1 className="text-[24px] sm:text-[28px] font-bold tracking-tight">Settings</h1>
+                <p className="text-white/40 text-[14px] mt-0.5">Manage your account and subscription.</p>
             </div>
 
-            {/* Current Plan Card */}
-            <Card className="glass border-white/5 overflow-hidden" id="settings-plan-card">
-                <CardHeader className="pb-4">
-                    <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${isPro ? 'bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/20' : 'bg-violet-500/10'}`}>
-                            {isPro ? <Crown className="w-4 h-4 text-white" /> : <Sparkles className="w-4 h-4 text-violet-400" />}
-                        </div>
-                        <div>
-                            <CardTitle className="text-lg">Current Plan</CardTitle>
-                            <CardDescription>You are currently on the {isPro ? 'Pro' : 'Free'} tier.</CardDescription>
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardContent>
-                    {loading ? (
-                        <div className="flex items-center gap-3 py-4">
-                            <Loader2 className="animate-spin text-violet-400 h-5 w-5" />
-                            <span className="text-sm text-muted-foreground">Loading subscription status…</span>
-                        </div>
-                    ) : (
-                        <div>
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="text-2xl font-bold">MusicForge {isPro ? 'Pro' : 'Free'}</div>
-                                {isPro && (
-                                    <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg shadow-amber-500/20">
-                                        Active
-                                    </Badge>
-                                )}
-                            </div>
-
-                            {!isPro && (
-                                <div className="p-5 rounded-xl bg-violet-500/5 border border-violet-500/10">
-                                    <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                        <Sparkles className="w-4 h-4 text-violet-400" />
-                                        Pro Features
-                                    </h4>
-                                    <ul className="space-y-2.5">
-                                        {proFeatures.map((feature, i) => (
-                                            <li key={i} className="flex gap-2.5 items-center text-sm text-muted-foreground">
-                                                <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
-                                                    <Check className="h-3 w-3 text-emerald-400" />
-                                                </div>
-                                                {feature}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+            <div className="grid gap-4 md:grid-cols-2">
+                {/* Current Plan */}
+                <Card className="bg-white/[0.03] border-white/[0.06]" id="settings-plan-card">
+                    <CardHeader>
+                        <div className="flex items-center justify-between">
+                            <CardTitle className="text-[17px]">Your Plan</CardTitle>
+                            {isPro && (
+                                <Badge className="bg-white/[0.08] text-white border-white/[0.1] text-[11px] font-semibold px-2.5">
+                                    <Crown className="w-3 h-3 mr-1" />
+                                    Premium
+                                </Badge>
                             )}
                         </div>
-                    )}
-                </CardContent>
-                <CardFooter className="bg-white/[0.02] border-t border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 py-5">
-                    <p className="text-sm text-muted-foreground">
-                        {isPro ? 'Manage your payment methods and invoices via Stripe.' : 'Upgrade now to unlock all premium features.'}
-                    </p>
-                    <Button
-                        onClick={isPro ? handleManageBilling : handleUpgrade}
-                        disabled={checkoutLoading || loading}
-                        id="settings-plan-btn"
-                        className={isPro
-                            ? "bg-white/5 hover:bg-white/10 text-foreground border border-white/10"
-                            : "bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-90 border-0 text-white shadow-lg shadow-violet-600/20"
-                        }
-                        size="lg"
-                    >
-                        {checkoutLoading && <Loader2 className="animate-spin h-4 w-4 mr-2" />}
-                        {isPro ? 'Manage Billing' : (
-                            <span className="flex items-center gap-2">
-                                <Sparkles className="w-4 h-4" />
-                                Upgrade to Pro
-                            </span>
+                        <CardDescription className="text-[13px]">
+                            {isPro
+                                ? "You're on qlefPro Premium. Enjoy all features."
+                                : "Upgrade to qlefPro Premium for full access."}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-[28px] font-bold tracking-tight mb-1">
+                            qlefPro {isPro ? 'Premium' : 'Free'}
+                        </div>
+                        <p className="text-white/30 text-[13px]">
+                            {isPro ? '$9.99 / month' : '$0 / month'}
+                        </p>
+                    </CardContent>
+                    <CardFooter>
+                        {isPro ? (
+                            <Button
+                                onClick={handleManageBilling}
+                                disabled={portalLoading}
+                                variant="outline"
+                                className="bg-white/[0.04] border-white/[0.08] hover:bg-white/[0.08] text-[13px] active:scale-[0.97]"
+                            >
+                                {portalLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                                Manage Billing
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={handleUpgrade}
+                                disabled={portalLoading}
+                                className="bg-white text-black hover:bg-white/90 font-semibold text-[13px] active:scale-[0.97]"
+                            >
+                                {portalLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                                Upgrade to Premium
+                            </Button>
                         )}
-                    </Button>
-                </CardFooter>
-            </Card>
+                    </CardFooter>
+                </Card>
+
+                {/* Features */}
+                <Card className="bg-white/[0.03] border-white/[0.06]" id="settings-features-card">
+                    <CardHeader>
+                        <CardTitle className="text-[17px]">Premium Features</CardTitle>
+                        <CardDescription className="text-[13px]">
+                            Everything included with qlefPro Premium.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ul className="space-y-3">
+                            {proFeatures.map((feature) => (
+                                <li key={feature} className="flex items-center gap-3">
+                                    <div className="w-5 h-5 rounded-full bg-white/[0.06] flex items-center justify-center flex-shrink-0">
+                                        <Check className="w-3 h-3 text-white/50" />
+                                    </div>
+                                    <span className="text-[14px] text-white/60">{feature}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     )
 }

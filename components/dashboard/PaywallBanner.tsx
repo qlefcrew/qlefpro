@@ -5,39 +5,33 @@ import { Lock, Sparkles } from 'lucide-react'
 
 export function PaywallBanner({ feature }: { feature: string }) {
     return (
-        <div className="relative w-full overflow-hidden rounded-2xl glass mt-8" id={`paywall-${feature.toLowerCase().replace(/\s+/g, '-')}`}>
-            {/* Blurred decorative background */}
-            <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-600/5 to-indigo-600/5" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-violet-600/10 rounded-full blur-3xl" />
-            </div>
-
+        <div className="relative w-full overflow-hidden rounded-2xl bg-white/[0.03] border border-white/[0.06] mt-6" id={`paywall-${feature.toLowerCase().replace(/\s+/g, '-')}`}>
             {/* Blurred mock content */}
-            <div className="relative z-10 p-8">
-                <div className="opacity-15 pointer-events-none select-none blur-sm">
-                    <div className="h-32 w-full bg-gradient-to-r from-muted to-muted/50 rounded-xl mb-4" />
-                    <div className="h-6 w-1/2 bg-muted rounded-lg mb-3" />
-                    <div className="h-6 w-3/4 bg-muted rounded-lg" />
+            <div className="relative p-8">
+                <div className="opacity-10 pointer-events-none select-none blur-sm">
+                    <div className="h-28 w-full bg-white/10 rounded-xl mb-4" />
+                    <div className="h-5 w-1/2 bg-white/10 rounded-lg mb-2" />
+                    <div className="h-5 w-3/4 bg-white/10 rounded-lg" />
                 </div>
             </div>
 
-            {/* Centered paywall card */}
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-4 backdrop-blur-md bg-background/30">
-                <Card className="w-full max-w-md text-center shadow-2xl border-violet-500/20 bg-card/90 backdrop-blur-xl">
-                    <CardHeader className="pb-4">
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-violet-600/25">
-                            <Lock className="h-6 w-6 text-white" />
+            {/* Paywall overlay */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-5 backdrop-blur-md bg-background/40">
+                <Card className="w-full max-w-sm text-center bg-card/90 backdrop-blur-xl border-white/[0.08] shadow-2xl">
+                    <CardHeader className="pb-3">
+                        <div className="w-12 h-12 rounded-2xl bg-white/[0.06] flex items-center justify-center mx-auto mb-3">
+                            <Lock className="h-5 w-5 text-white/50" />
                         </div>
-                        <CardTitle className="text-xl">{feature} is a Premium Feature</CardTitle>
-                        <CardDescription className="text-sm leading-relaxed">
-                            Upgrade to MusicForge Pro to unlock {feature.toLowerCase()} and take your career to the next level.
+                        <CardTitle className="text-[17px]">{feature}</CardTitle>
+                        <CardDescription className="text-[13px]">
+                            Upgrade to qlefPro Premium to unlock {feature.toLowerCase()}.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Button asChild className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-90 shadow-lg shadow-violet-600/20 border-0 text-white" size="lg">
+                        <Button asChild className="w-full bg-white text-black hover:bg-white/90 border-0 font-semibold active:scale-[0.97]" size="lg">
                             <Link href="/settings" className="flex items-center gap-2">
                                 <Sparkles className="w-4 h-4" />
-                                Upgrade to Pro
+                                Upgrade
                             </Link>
                         </Button>
                     </CardContent>

@@ -30,7 +30,7 @@ export function RoyaltySplitCard({ trackTitle, totalEarnings, splits }: RoyaltyS
 
     const platformFeeUsd = totalEarnings * 0.12
 
-    const labels = [...effectiveSplits.map(s => s.collaborator), 'MusicForge (Platform Fee)']
+    const labels = [...effectiveSplits.map(s => s.collaborator), 'qlefPro (Platform Fee)']
     const data = [...effectiveSplits.map(s => s.effectivePercentage), 12]
 
     const chartData = {
@@ -102,7 +102,7 @@ export function RoyaltySplitCard({ trackTitle, totalEarnings, splits }: RoyaltyS
                     <div className="flex justify-between items-center text-sm py-2 px-3 rounded-lg border-t border-white/5 mt-2 pt-3">
                         <div className="flex items-center gap-2.5">
                             <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: COLORS[COLORS.length - 1] }} />
-                            <span className="font-medium">MusicForge <span className="text-muted-foreground font-normal">(Platform Fee)</span></span>
+                            <span className="font-medium">qlefPro <span className="text-muted-foreground font-normal">(Platform Fee)</span></span>
                         </div>
                         <div className="text-right">
                             <div className="font-semibold">{formatCurrency(platformFeeUsd)}</div>
