@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { BarChart3, Shield, Zap, ArrowRight, Disc3, Headphones, TrendingUp, Users, ChevronRight, Music2, Layers } from 'lucide-react'
+import { ArrowRight, Disc3, Headphones, ChevronRight, Music2, Shield, BarChart3, Layers, Sparkles } from 'lucide-react'
 import { useAuth } from '@clerk/nextjs'
 
 const features = [
@@ -33,6 +33,8 @@ const stats = [
   { value: '10', label: 'Max Splits' },
   { value: '500MB', label: 'Max File Size' },
 ]
+
+const EARLY_ACCESS_URL = 'https://qlefmarketing.com'
 
 export default function Home() {
   const { isSignedIn } = useAuth()
@@ -72,17 +74,19 @@ export default function Home() {
                 <Link
                   href="/sign-in"
                   id="nav-signin-btn"
-                  className="px-4 py-2 rounded-full text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  className="px-4 py-2 rounded-full text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:inline-flex"
                 >
                   Sign In
                 </Link>
-                <Link
-                  href="/sign-up"
-                  id="nav-signup-btn"
+                <a
+                  href={EARLY_ACCESS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  id="nav-earlyaccess-btn"
                   className="px-4 py-2 rounded-full bg-white text-black font-semibold text-[13px] hover:bg-white/90 transition-all active:scale-95"
                 >
-                  Get Started
-                </Link>
+                  Early Access
+                </a>
               </>
             )}
           </div>
@@ -90,46 +94,59 @@ export default function Home() {
       </nav>
 
       {/* ─── Hero ────────────────────────────────────── */}
-      <section className="relative pt-20 sm:pt-28 pb-20 px-5" id="hero-section">
+      <section className="relative pt-16 sm:pt-24 pb-16 px-5" id="hero-section">
         <div className="max-w-3xl mx-auto text-center animate-slide-up">
-          {/* Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/[0.08] text-[13px] text-white/70 mb-8">
-            <Headphones className="w-3.5 h-3.5" />
-            <span>Built for Independent Artists</span>
-            <ChevronRight className="w-3 h-3 text-white/40" />
-          </div>
+          {/* Early Access Badge */}
+          <a
+            href={EARLY_ACCESS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/[0.1] border border-indigo-400/[0.15] text-[13px] text-indigo-300 mb-8 hover:bg-indigo-500/[0.15] transition-all active:scale-95"
+            id="hero-badge"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span className="font-medium">Now accepting Early Access sign-ups</span>
+            <ChevronRight className="w-3 h-3 text-indigo-400/60 group-hover:translate-x-0.5 transition-transform" />
+          </a>
 
           {/* Headline */}
-          <h1 className="text-[44px] sm:text-[64px] md:text-[72px] font-extrabold tracking-[-0.04em] leading-[0.95] mb-6">
-            Distribute.
+          <h1 className="text-[40px] sm:text-[60px] md:text-[72px] font-extrabold tracking-[-0.04em] leading-[0.95] mb-6">
+            Your music.
             <br />
-            <span className="gradient-text-brand">Split. Grow.</span>
+            <span className="gradient-text-brand">Your money.</span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-[16px] sm:text-[18px] text-white/50 max-w-lg mx-auto mb-10 leading-relaxed font-normal">
-            The all-in-one platform for independent musicians.
-            Upload, manage royalty splits, and track streaming analytics.
+            Upload tracks, split royalties transparently with collaborators,
+            and track your streaming analytics — all in one platform.
           </p>
 
-          {/* CTA */}
+          {/* CTA — links to qlefmarketing.com */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              href="/sign-up"
+            <a
+              href={EARLY_ACCESS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               id="hero-cta-primary"
-              className="group w-full sm:w-auto px-7 py-3.5 rounded-full bg-white text-black font-semibold text-[15px] hover:bg-white/90 transition-all active:scale-[0.97] flex items-center justify-center gap-2"
+              className="group w-full sm:w-auto px-7 py-4 rounded-full bg-white text-black font-semibold text-[15px] hover:bg-white/90 transition-all active:scale-[0.97] flex items-center justify-center gap-2 shadow-lg shadow-white/[0.05]"
             >
-              Start for Free
+              Get Early Access
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
-            <Link
+            </a>
+            <a
               href="#features"
               id="hero-cta-secondary"
-              className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white/[0.06] border border-white/[0.08] text-[15px] font-medium text-white/80 hover:bg-white/[0.1] transition-all active:scale-[0.97] text-center"
+              className="w-full sm:w-auto px-7 py-4 rounded-full bg-white/[0.06] border border-white/[0.08] text-[15px] font-medium text-white/80 hover:bg-white/[0.1] transition-all active:scale-[0.97] text-center"
             >
-              Learn More
-            </Link>
+              See What&apos;s Coming
+            </a>
           </div>
+
+          {/* Social proof line */}
+          <p className="mt-8 text-[12px] text-white/25 font-medium tracking-wide">
+            FREE TO JOIN · NO CREDIT CARD REQUIRED
+          </p>
         </div>
       </section>
 
@@ -183,7 +200,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── CTA ─────────────────────────────────────── */}
+      {/* ─── Early Access CTA ────────────────────────── */}
       <section className="py-20 px-5" id="cta-section">
         <div className="max-w-xl mx-auto text-center">
           <div className="p-10 sm:p-14 rounded-3xl bg-white/[0.03] border border-white/[0.06] relative overflow-hidden">
@@ -192,19 +209,24 @@ export default function Home() {
             <div className="relative">
               <Disc3 className="w-10 h-10 text-white/30 mx-auto mb-6 animate-float" />
               <h2 className="text-[24px] sm:text-[30px] font-bold tracking-tight mb-3">
-                Ready to take control?
+                Be first in line.
               </h2>
               <p className="text-white/40 text-[15px] mb-8 max-w-sm mx-auto">
-                Join independent artists who trust qlefPro to manage their catalog, splits, and earnings.
+                Join artists already signed up for early access. Get notified when qlefPro launches and lock in founder pricing.
               </p>
-              <Link
-                href="/sign-up"
+              <a
+                href={EARLY_ACCESS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 id="cta-bottom-btn"
-                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-black font-semibold text-[15px] hover:bg-white/90 transition-all active:scale-[0.97]"
+                className="group inline-flex items-center gap-2 px-7 py-4 rounded-full bg-white text-black font-semibold text-[15px] hover:bg-white/90 transition-all active:scale-[0.97] shadow-lg shadow-white/[0.05]"
               >
-                Create Your Account
+                Sign Up for Early Access
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              </a>
+              <p className="mt-5 text-[12px] text-white/20">
+                Takes 30 seconds · Completely free
+              </p>
             </div>
           </div>
         </div>
@@ -224,7 +246,9 @@ export default function Home() {
           <div className="flex items-center gap-5 text-[13px] text-white/30">
             <span className="hover:text-white/60 transition-colors cursor-pointer">Terms</span>
             <span className="hover:text-white/60 transition-colors cursor-pointer">Privacy</span>
-            <span className="hover:text-white/60 transition-colors cursor-pointer">Support</span>
+            <a href={EARLY_ACCESS_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white/60 transition-colors">
+              Early Access
+            </a>
           </div>
         </div>
       </footer>
