@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Disc3, Headphones, ChevronRight, Music2, Shield, BarChart3, Layers, Sparkles } from 'lucide-react'
+import { ArrowRight, Disc3, Headphones, ChevronRight, Music2, Shield, BarChart3, Layers, Sparkles, LayoutDashboard } from 'lucide-react'
 import { useAuth } from '@clerk/nextjs'
 
 const features = [
@@ -134,13 +134,14 @@ export default function Home() {
               Get Early Access
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </a>
-            <a
-              href="#features"
+            <Link
+              href="/demo/login"
               id="hero-cta-secondary"
-              className="w-full sm:w-auto px-7 py-4 rounded-full bg-white/[0.06] border border-white/[0.08] text-[15px] font-medium text-white/80 hover:bg-white/[0.1] transition-all active:scale-[0.97] text-center"
+              className="w-full sm:w-auto px-7 py-4 rounded-full bg-white/[0.06] border border-white/[0.08] text-[15px] font-medium text-white/80 hover:bg-white/[0.1] transition-all active:scale-[0.97] text-center flex items-center justify-center gap-2"
             >
-              See What&apos;s Coming
-            </a>
+              <LayoutDashboard className="w-4 h-4" />
+              Interactive Demo
+            </Link>
           </div>
 
           {/* Social proof line */}
